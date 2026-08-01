@@ -7,6 +7,7 @@
 #include "Base/Audio.h"
 #include "Utils/Logging.h"
 #include "Utils/Paths.h"
+#include "Utils/StringTools.h"
 
 #define MINIAUDIO_IMPLEMENTATION
 #include <miniaudio.h>
@@ -69,14 +70,19 @@ namespace Base
 
 		std::string resolvedPath = Utils::Paths::Resolve(path);
 
-		m_Sound = new ma_sound{};
-		if (ma_sound_init_from_file(engine.GetHandle(), resolvedPath.c_str(), 0, nullptr, nullptr, m_Sound) == MA_SUCCESS)
+		if (!Utils::StringTools::EndsWith(Utils::StringTools::ToLower(resolvedPath), ".ogg"))
 		{
-			return true;
-		}
+			m_Sound = new ma_sound{};
+			if (ma_sound_init_from_file(engine.GetHandle(), resolvedPath.c_str(), 0, nullptr, nullptr, m_Sound) == MA_SUCCESS)
+			{
+				return true;
+			}
 
-		delete m_Sound;
-		m_Sound = nullptr;
+			LOG_ERROR(std::format("Sound: failed to load \"{}\"", resolvedPath));
+			delete m_Sound;
+			m_Sound = nullptr;
+			return false;
+		}
 
 		int channels = 0;
 		int sampleRate = 0;
