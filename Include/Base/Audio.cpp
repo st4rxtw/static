@@ -5,6 +5,7 @@
  */
 
 #include "Base/Audio.h"
+#include "Utils/Logging.h"
 #include "Utils/Paths.h"
 
 #define MINIAUDIO_IMPLEMENTATION
@@ -13,8 +14,8 @@
 #define STB_VORBIS_HEADER_ONLY
 #include <stb_vorbis.c>
 
-#include <cstdio>
 #include <cstdlib>
+#include <format>
 #include <string>
 
 namespace Base
@@ -31,7 +32,7 @@ namespace Base
 		m_Engine = new ma_engine{};
 		if (ma_engine_init(nullptr, m_Engine) != MA_SUCCESS)
 		{
-			std::fprintf(stderr, "AudioEngine: ma_engine_init failed\n");
+			LOG_ERROR("AudioEngine: ma_engine_init failed");
 			delete m_Engine;
 			m_Engine = nullptr;
 			return false;
@@ -83,7 +84,7 @@ namespace Base
 		int frameCount = stb_vorbis_decode_filename(resolvedPath.c_str(), &channels, &sampleRate, &pcm);
 		if (frameCount <= 0)
 		{
-			std::fprintf(stderr, "Sound: failed to load \"%s\"\n", resolvedPath.c_str());
+			LOG_ERROR(std::format("Sound: failed to load \"{}\"", resolvedPath));
 			return false;
 		}
 
@@ -96,7 +97,7 @@ namespace Base
 
 		if (bufferResult != MA_SUCCESS)
 		{
-			std::fprintf(stderr, "Sound: failed to buffer \"%s\"\n", resolvedPath.c_str());
+			LOG_ERROR(std::format("Sound: failed to buffer \"{}\"", resolvedPath));
 			delete audioBuffer;
 			return false;
 		}
@@ -106,7 +107,7 @@ namespace Base
 		m_Sound = new ma_sound{};
 		if (ma_sound_init_from_data_source(engine.GetHandle(), reinterpret_cast<ma_data_source*>(&audioBuffer->ref), 0, nullptr, m_Sound) != MA_SUCCESS)
 		{
-			std::fprintf(stderr, "Sound: failed to init sound from \"%s\"\n", resolvedPath.c_str());
+			LOG_ERROR(std::format("Sound: failed to init sound from \"{}\"", resolvedPath));
 			Destroy();
 			return false;
 		}

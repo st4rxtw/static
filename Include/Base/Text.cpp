@@ -5,12 +5,13 @@
  */
 
 #include "Base/Text.h"
+#include "Utils/Logging.h"
 #include "Utils/Paths.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
 
-#include <cstdio>
+#include <format>
 #include <fstream>
 #include <vector>
 
@@ -26,7 +27,7 @@ namespace Base
 		std::ifstream file(resolvedPath, std::ios::binary);
 		if (!file)
 		{
-			std::fprintf(stderr, "Font: failed to open \"%s\"\n", resolvedPath.c_str());
+			LOG_ERROR(std::format("Font: failed to open \"{}\"", resolvedPath));
 			return false;
 		}
 
@@ -39,7 +40,7 @@ namespace Base
 		int result = stbtt_BakeFontBitmap(fileData.data(), 0, pixelHeight, atlasBitmap.data(), kAtlasSize, kAtlasSize, kFirstChar, kCharCount, bakedChars.data());
 		if (result <= 0)
 		{
-			std::fprintf(stderr, "Font: failed to bake \"%s\"\n", resolvedPath.c_str());
+			LOG_ERROR(std::format("Font: failed to bake \"{}\"", resolvedPath));
 			return false;
 		}
 

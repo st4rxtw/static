@@ -65,16 +65,19 @@ namespace Utils
 
 	void Log::Info(const std::string& message)
 	{
+		// log an info message
 		LogMessage(LogLevel::Info, message);
 	}
 
 	void Log::Warning(const std::string& message)
 	{
+		// log a warning
 		LogMessage(LogLevel::Warning, message);
 	}
 
 	void Log::Error(const std::string& message)
 	{
+		// log an error
 		LogMessage(LogLevel::Error, message);
 	}
 

@@ -5,10 +5,11 @@
  */
 
 #include "Render/OpenGL/GLShader.h"
+#include "Utils/Logging.h"
 
 #include <glad/glad.h>
 
-#include <cstdio>
+#include <format>
 #include <string>
 #include <vector>
 
@@ -32,7 +33,7 @@ namespace Render
 				glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength);
 				std::vector<char> log(static_cast<size_t>(logLength) + 1);
 				glGetShaderInfoLog(handle, logLength, nullptr, log.data());
-				std::fprintf(stderr, "GLShader: stage compile failed: %s\n", log.data());
+				LOG_ERROR(std::format("GLShader: stage compile failed: {}", log.data()));
 				glDeleteShader(handle);
 				return 0;
 			}
@@ -99,7 +100,7 @@ namespace Render
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
 			std::vector<char> log(static_cast<size_t>(logLength) + 1);
 			glGetProgramInfoLog(program, logLength, nullptr, log.data());
-			std::fprintf(stderr, "GLShader: link failed: %s\n", log.data());
+			LOG_ERROR(std::format("GLShader: link failed: {}", log.data()));
 			glDeleteProgram(program);
 			return false;
 		}

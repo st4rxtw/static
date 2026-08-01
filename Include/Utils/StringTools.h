@@ -19,6 +19,7 @@ namespace Utils
 	public:
 		static std::string ToLower(std::string_view str)
 		{
+			// to lowercase
 			std::string result(str);
 			std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
 			return result;
@@ -26,6 +27,7 @@ namespace Utils
 
 		static std::string ToUpper(std::string_view str)
 		{
+			// to uppercase
 			std::string result(str);
 			std::transform(result.begin(), result.end(), result.begin(), [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
 			return result;
@@ -33,6 +35,7 @@ namespace Utils
 
 		static std::string Trim(std::string_view str)
 		{
+			// trim text
 			size_t begin = str.find_first_not_of(" \t\n\r\f\v");
 			if (begin == std::string_view::npos)
 			{
@@ -45,16 +48,19 @@ namespace Utils
 
 		static bool StartsWith(std::string_view str, std::string_view prefix)
 		{
+			// if it starts with something
 			return str.starts_with(prefix);
 		}
 
 		static bool EndsWith(std::string_view str, std::string_view suffix)
 		{
+			// if it ends with something
 			return str.ends_with(suffix);
 		}
 
 		static std::vector<std::string> Split(std::string_view str, char delimiter)
 		{
+			// split text
 			std::vector<std::string> result;
 
 			size_t start = 0;

@@ -5,6 +5,7 @@
  */
 
 #include "Render/OpenGL/GLTexture.h"
+#include "Utils/Logging.h"
 #include "Utils/Paths.h"
 
 #include <glad/glad.h>
@@ -12,7 +13,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-#include <cstdio>
+#include <format>
 #include <string>
 
 namespace Render
@@ -61,7 +62,7 @@ namespace Render
 		stbi_uc* pixels = stbi_load(resolvedPath.c_str(), &width, &height, &channels, 4);
 		if (pixels == nullptr)
 		{
-			std::fprintf(stderr, "GLTexture: failed to load \"%s\": %s\n", resolvedPath.c_str(), stbi_failure_reason());
+			LOG_ERROR(std::format("GLTexture: failed to load \"{}\": {}", resolvedPath, stbi_failure_reason()));
 			return false;
 		}
 

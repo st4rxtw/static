@@ -5,12 +5,13 @@
  */
 
 #include "Render/Renderer.h"
+#include "Utils/Logging.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <array>
-#include <cstdio>
+#include <format>
 #include <string>
 
 namespace Render
@@ -76,7 +77,7 @@ void main()
 	{
 		if (glfwInit() == GLFW_FALSE)
 		{
-			std::fprintf(stderr, "Renderer: glfwInit failed\n");
+			LOG_ERROR("Renderer: glfwInit failed");
 			return false;
 		}
 
@@ -87,7 +88,7 @@ void main()
 		m_Window = glfwCreateWindow(width, height, std::string(title).c_str(), nullptr, nullptr);
 		if (m_Window == nullptr)
 		{
-			std::fprintf(stderr, "Renderer: glfwCreateWindow failed\n");
+			LOG_ERROR("Renderer: glfwCreateWindow failed");
 			glfwTerminate();
 			return false;
 		}
@@ -102,7 +103,7 @@ void main()
 
 		if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
 		{
-			std::fprintf(stderr, "Renderer: gladLoadGLLoader failed\n");
+			LOG_ERROR("Renderer: gladLoadGLLoader failed");
 			Shutdown();
 			return false;
 		}
