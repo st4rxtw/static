@@ -22,6 +22,7 @@ add_library(static STATIC
     Include/Base/Audio.cpp
     Include/Base/Camera.cpp
     Include/Base/GameObject.cpp
+    Include/Base/Text.cpp
     Include/Game.cpp
     Include/Render/OpenGL/GLShader.cpp
     Include/Render/OpenGL/GLTexture.cpp

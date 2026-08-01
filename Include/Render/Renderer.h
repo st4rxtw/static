@@ -45,6 +45,7 @@ namespace Render
 
 		void DrawQuad(float x, float y, float width, float height, const Color& color);
 		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
+		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
 
 		int GetWidth() const { return m_Width; }
 		int GetHeight() const { return m_Height; }

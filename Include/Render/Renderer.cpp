@@ -247,6 +247,11 @@ void main()
 		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, texture.GetID());
 	}
 
+	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color)
+	{
+		PushQuad(x, y, width, height, u0, v0, u1, v1, color, texture.GetID());
+	}
+
 	void Renderer::Flush()
 	{
 		if (m_QuadCount == 0)
