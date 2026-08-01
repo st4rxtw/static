@@ -54,6 +54,7 @@ namespace Base
 
 	private:
 		ma_sound* m_Sound = nullptr;
+		void* m_AudioBuffer = nullptr;
 	};
 }
 

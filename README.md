@@ -36,3 +36,10 @@ It can be found [here](https://github.com/nothings/stb)
 License: Public Domain
 
 It can be found [here](https://github.com/nothings/stb)
+
+#### stb_vorbis
+> Created by Sean Barrett
+
+License: Public Domain
+
+It can be found [here](https://github.com/nothings/stb)

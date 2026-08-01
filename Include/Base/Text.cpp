@@ -5,6 +5,7 @@
  */
 
 #include "Base/Text.h"
+#include "Utils/Paths.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
@@ -20,10 +21,12 @@ namespace Base
 		// loads the ttf font
 		Destroy();
 
-		std::ifstream file(std::string(path), std::ios::binary);
+		std::string resolvedPath = Utils::Paths::Resolve(path);
+
+		std::ifstream file(resolvedPath, std::ios::binary);
 		if (!file)
 		{
-			std::fprintf(stderr, "Font: failed to open \"%s\"\n", std::string(path).c_str());
+			std::fprintf(stderr, "Font: failed to open \"%s\"\n", resolvedPath.c_str());
 			return false;
 		}
 
@@ -36,7 +39,7 @@ namespace Base
 		int result = stbtt_BakeFontBitmap(fileData.data(), 0, pixelHeight, atlasBitmap.data(), kAtlasSize, kAtlasSize, kFirstChar, kCharCount, bakedChars.data());
 		if (result <= 0)
 		{
-			std::fprintf(stderr, "Font: failed to bake \"%s\"\n", std::string(path).c_str());
+			std::fprintf(stderr, "Font: failed to bake \"%s\"\n", resolvedPath.c_str());
 			return false;
 		}
 

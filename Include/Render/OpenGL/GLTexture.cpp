@@ -5,6 +5,7 @@
  */
 
 #include "Render/OpenGL/GLTexture.h"
+#include "Utils/Paths.h"
 
 #include <glad/glad.h>
 
@@ -50,15 +51,17 @@ namespace Render
 	bool GLTexture::LoadFromFile(std::string_view path)
 	{
 		// load texture from a file
+		std::string resolvedPath = Utils::Paths::Resolve(path);
+
 		stbi_set_flip_vertically_on_load(1);
 
 		int width = 0;
 		int height = 0;
 		int channels = 0;
-		stbi_uc* pixels = stbi_load(std::string(path).c_str(), &width, &height, &channels, 4);
+		stbi_uc* pixels = stbi_load(resolvedPath.c_str(), &width, &height, &channels, 4);
 		if (pixels == nullptr)
 		{
-			std::fprintf(stderr, "GLTexture: failed to load \"%s\": %s\n", std::string(path).c_str(), stbi_failure_reason());
+			std::fprintf(stderr, "GLTexture: failed to load \"%s\": %s\n", resolvedPath.c_str(), stbi_failure_reason());
 			return false;
 		}
 

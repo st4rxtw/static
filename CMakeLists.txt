@@ -18,6 +18,9 @@ add_library(glad STATIC third_party/glad/src/glad.c)
 target_include_directories(glad PUBLIC third_party/glad/include)
 target_link_libraries(glad PUBLIC ${CMAKE_DL_LIBS})
 
+add_library(stb_vorbis STATIC third_party/stb/stb_vorbis.c)
+target_include_directories(stb_vorbis PUBLIC third_party/stb)
+
 add_library(static STATIC
     Include/Base/Audio.cpp
     Include/Base/Camera.cpp
@@ -38,7 +41,7 @@ target_include_directories(static PUBLIC
     third_party/stb
 )
 
-target_link_libraries(static PUBLIC glfw glad)
+target_link_libraries(static PUBLIC glfw glad stb_vorbis)
 
 target_compile_features(static PUBLIC cxx_std_20)
 
