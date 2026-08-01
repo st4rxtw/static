@@ -26,6 +26,7 @@ add_library(static STATIC
     Include/Base/Camera.cpp
     Include/Base/GameObject.cpp
     Include/Base/Text.cpp
+    Include/EventHandler.cpp
     Include/Game.cpp
     Include/Render/OpenGL/GLShader.cpp
     Include/Render/OpenGL/GLTexture.cpp
