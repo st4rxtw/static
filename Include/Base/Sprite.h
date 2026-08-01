@@ -23,6 +23,9 @@ namespace Base
 		// sets the sprites color
 		void SetColor(const Render::Color& color) { m_Color = color; }
 
+		float GetWidth() const { return m_Width; }
+		float GetHeight() const { return m_Height; }
+
 		void Draw(Render::Renderer& renderer) override
 		{
 			// renders the sprite
