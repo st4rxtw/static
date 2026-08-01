@@ -32,6 +32,7 @@ add_library(static STATIC
     Include/Render/Renderer.cpp
     Include/Utils/Easing.cpp
     Include/Utils/Logging.cpp
+    Include/Utils/TweenManager.cpp
 )
 add_library(static::static ALIAS static)
 
