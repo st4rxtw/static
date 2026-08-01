@@ -200,13 +200,17 @@ void main()
 		glfwPollEvents();
 	}
 
-	void Renderer::BeginFrame(const Color& clearColor)
+	void Renderer::BeginFrame(const Color& clearColor, float cameraX, float cameraY, float cameraZoom)
 	{
 		glClearColor(clearColor.r, clearColor.g, clearColor.b, clearColor.a);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		m_QuadCount = 0;
 		m_BatchTextureID = 0;
+
+		m_CameraX = cameraX;
+		m_CameraY = cameraY;
+		m_CameraZoom = cameraZoom;
 	}
 
 	void Renderer::EndFrame()
@@ -252,8 +256,13 @@ void main()
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, static_cast<long>(static_cast<size_t>(m_QuadCount) * 4 * sizeof(QuadVertex)), m_Vertices.data());
 
+		float left = m_CameraX;
+		float right = m_CameraX + static_cast<float>(m_Width) / m_CameraZoom;
+		float top = m_CameraY;
+		float bottom = m_CameraY + static_cast<float>(m_Height) / m_CameraZoom;
+
 		float projection[16];
-		MakeOrtho(0.0f, static_cast<float>(m_Width), static_cast<float>(m_Height), 0.0f, projection);
+		MakeOrtho(left, right, bottom, top, projection);
 
 		m_Shader.Bind();
 		m_Shader.SetMat4("uProjection", projection);

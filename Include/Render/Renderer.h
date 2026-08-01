@@ -40,7 +40,7 @@ namespace Render
 		bool ShouldClose() const;
 		void PollEvents() const;
 
-		void BeginFrame(const Color& clearColor);
+		void BeginFrame(const Color& clearColor, float cameraX = 0.0f, float cameraY = 0.0f, float cameraZoom = 1.0f);
 		void EndFrame();
 
 		void DrawQuad(float x, float y, float width, float height, const Color& color);
@@ -79,5 +79,9 @@ namespace Render
 		std::vector<QuadVertex> m_Vertices;
 		uint32_t m_QuadCount = 0;
 		uint32_t m_BatchTextureID = 0;
+
+		float m_CameraX = 0.0f;
+		float m_CameraY = 0.0f;
+		float m_CameraZoom = 1.0f;
 	};
 }
