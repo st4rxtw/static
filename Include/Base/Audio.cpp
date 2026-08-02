@@ -176,5 +176,12 @@ namespace Base
 		// bool for if any sound is playing
 		return ma_sound_is_playing(m_Sound) == MA_TRUE;
 	}
+
+	float Sound::GetPositionSeconds() const
+	{
+		float cursor = 0.0f;
+		ma_sound_get_cursor_in_seconds(m_Sound, &cursor);
+		return cursor;
+	}
 }
 

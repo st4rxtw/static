@@ -51,6 +51,7 @@ namespace Base
 		void SetLooping(bool looping);
 		void SetVolume(float volume);
 		bool IsPlaying() const;
+		float GetPositionSeconds() const;
 
 	private:
 		ma_sound* m_Sound = nullptr;
