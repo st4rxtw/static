@@ -25,17 +25,22 @@ namespace Base
 		bool IsKeyReleased(int key) const;
 
 		bool IsMouseButtonDown(int button) const;
+		bool IsMouseButtonPressed(int button) const;
 
 		float GetMouseX() const { return m_MouseX; }
 		float GetMouseY() const { return m_MouseY; }
 
 	private:
 		static constexpr int kKeyCount = 349;
+		static constexpr int kMouseButtonCount = 8;
 
 		GLFWwindow* m_Window = nullptr;
 
 		std::array<bool, kKeyCount> m_CurrentKeys{};
 		std::array<bool, kKeyCount> m_PreviousKeys{};
+
+		std::array<bool, kMouseButtonCount> m_CurrentMouseButtons{};
+		std::array<bool, kMouseButtonCount> m_PreviousMouseButtons{};
 
 		float m_MouseX = 0.0f;
 		float m_MouseY = 0.0f;

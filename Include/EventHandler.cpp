@@ -24,6 +24,13 @@ namespace Base
 			m_CurrentKeys[static_cast<size_t>(key)] = glfwGetKey(m_Window, key) == GLFW_PRESS;
 		}
 
+		m_PreviousMouseButtons = m_CurrentMouseButtons;
+
+		for (int button = 0; button < kMouseButtonCount; ++button)
+		{
+			m_CurrentMouseButtons[static_cast<size_t>(button)] = glfwGetMouseButton(m_Window, button) == GLFW_PRESS;
+		}
+
 		double x = 0.0;
 		double y = 0.0;
 		glfwGetCursorPos(m_Window, &x, &y);
@@ -49,5 +56,10 @@ namespace Base
 	bool EventHandler::IsMouseButtonDown(int button) const
 	{
 		return glfwGetMouseButton(m_Window, button) == GLFW_PRESS;
+	}
+
+	bool EventHandler::IsMouseButtonPressed(int button) const
+	{
+		return button >= 0 && button < kMouseButtonCount && m_CurrentMouseButtons[static_cast<size_t>(button)] && !m_PreviousMouseButtons[static_cast<size_t>(button)];
 	}
 }

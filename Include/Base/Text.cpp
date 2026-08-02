@@ -80,6 +80,28 @@ namespace Base
 		m_Glyphs.fill(Glyph{});
 	}
 
+	float Text::GetWidth() const
+	{
+		if (m_Font == nullptr)
+		{
+			return 0.0f;
+		}
+
+		float width = 0.0f;
+		for (char c : m_Text)
+		{
+			auto uc = static_cast<unsigned char>(c);
+			if (!Font::HasGlyph(uc))
+			{
+				continue;
+			}
+
+			width += m_Font->GetGlyph(uc).xadvance;
+		}
+
+		return width * m_ScaleX;
+	}
+
 	void Text::Draw(Render::Renderer& renderer)
 	{
 		// renders the text
@@ -100,9 +122,9 @@ namespace Base
 			}
 
 			const Font::Glyph& glyph = m_Font->GetGlyph(uc);
-			renderer.DrawQuad(penX + glyph.xoff, penY + glyph.yoff, glyph.width, glyph.height, m_Font->GetAtlas(), glyph.u0, glyph.v0, glyph.u1, glyph.v1, m_Color);
+			renderer.DrawQuad(penX + glyph.xoff * m_ScaleX, penY + glyph.yoff * m_ScaleY, glyph.width * m_ScaleX, glyph.height * m_ScaleY, m_Font->GetAtlas(), glyph.u0, glyph.v0, glyph.u1, glyph.v1, m_Color);
 
-			penX += glyph.xadvance;
+			penX += glyph.xadvance * m_ScaleX;
 		}
 	}
 }

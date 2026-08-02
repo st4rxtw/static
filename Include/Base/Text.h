@@ -55,6 +55,16 @@ namespace Base
 		void SetFont(const Font* font) { m_Font = font; }
 		void SetString(std::string text) { m_Text = std::move(text); }
 		void SetColor(const Render::Color& color) { m_Color = color; }
+		void SetScale(float x, float y) { m_ScaleX = x; m_ScaleY = y; }
+
+		const std::string& GetString() const { return m_Text; }
+		float GetScaleX() const { return m_ScaleX; }
+		float GetScaleY() const { return m_ScaleY; }
+		float GetWidth() const;
+
+		float* GetScaleXPtr() { return &m_ScaleX; }
+		float* GetScaleYPtr() { return &m_ScaleY; }
+		Render::Color& GetColorRef() { return m_Color; }
 
 		void Draw(Render::Renderer& renderer) override;
 
@@ -62,6 +72,8 @@ namespace Base
 		const Font* m_Font = nullptr;
 		std::string m_Text;
 		Render::Color m_Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		float m_ScaleX = 1.0f;
+		float m_ScaleY = 1.0f;
 	};
 }
 

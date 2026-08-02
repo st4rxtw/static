@@ -28,6 +28,9 @@ namespace Base
 		float GetX() const { return m_X; }
 		float GetY() const { return m_Y; }
 
+		float* GetXPtr() { return &m_X; }
+		float* GetYPtr() { return &m_Y; }
+
 	protected:
 		float m_X = 0.0f;
 		float m_Y = 0.0f;
