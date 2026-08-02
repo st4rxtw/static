@@ -41,10 +41,12 @@ namespace Base
 		const Render::GLTexture& GetAtlas() const { return m_Atlas; }
 		const Glyph& GetGlyph(unsigned char c) const { return m_Glyphs[c - kFirstChar]; }
 		static bool HasGlyph(unsigned char c) { return c >= kFirstChar && c < kFirstChar + kCharCount; }
+		float GetAscent() const { return m_Ascent; }
 
 	private:
 		Render::GLTexture m_Atlas;
 		std::array<Glyph, kCharCount> m_Glyphs{};
+		float m_Ascent = 0.0f;
 	};
 
 	class Text : public GameObject

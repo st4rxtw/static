@@ -222,6 +222,11 @@ void main()
 
 	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID)
 	{
+		PushQuad(x, y, width, height, u0, v0, u1, v1, color, color, textureID);
+	}
+
+	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID)
+	{
 		if (m_QuadCount > 0 && (m_QuadCount >= kMaxQuadsPerBatch || textureID != m_BatchTextureID))
 		{
 			Flush();
@@ -230,10 +235,10 @@ void main()
 		m_BatchTextureID = textureID;
 
 		QuadVertex* vertex = &m_Vertices[static_cast<size_t>(m_QuadCount) * 4];
-		vertex[0] = { x, y, u0, v0, color.r, color.g, color.b, color.a };
-		vertex[1] = { x + width, y, u1, v0, color.r, color.g, color.b, color.a };
-		vertex[2] = { x + width, y + height, u1, v1, color.r, color.g, color.b, color.a };
-		vertex[3] = { x, y + height, u0, v1, color.r, color.g, color.b, color.a };
+		vertex[0] = { x, y, u0, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+		vertex[1] = { x + width, y, u1, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+		vertex[2] = { x + width, y + height, u1, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+		vertex[3] = { x, y + height, u0, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
 
 		++m_QuadCount;
 	}
@@ -241,6 +246,11 @@ void main()
 	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& color)
 	{
 		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, m_WhiteTexture.GetID());
+	}
+
+	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor)
+	{
+		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, topColor, bottomColor, m_WhiteTexture.GetID());
 	}
 
 	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color)

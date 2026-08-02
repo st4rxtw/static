@@ -55,6 +55,13 @@ namespace Base
 
 		m_Atlas.LoadFromMemory(kAtlasSize, kAtlasSize, rgba.data());
 
+		stbtt_fontinfo info;
+		stbtt_InitFont(&info, fileData.data(), 0);
+
+		int ascent = 0;
+		stbtt_GetFontVMetrics(&info, &ascent, nullptr, nullptr);
+		m_Ascent = static_cast<float>(ascent) * stbtt_ScaleForPixelHeight(&info, pixelHeight);
+
 		for (int i = 0; i < kCharCount; ++i)
 		{
 			const stbtt_bakedchar& baked = bakedChars[static_cast<size_t>(i)];
@@ -111,7 +118,7 @@ namespace Base
 		}
 
 		float penX = m_X;
-		float penY = m_Y;
+		float penY = m_Y + m_Font->GetAscent() * m_ScaleY;
 
 		for (char c : m_Text)
 		{

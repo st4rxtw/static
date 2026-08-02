@@ -23,6 +23,12 @@ namespace Base
 		// sets the sprites color
 		void SetColor(const Render::Color& color) { m_Color = color; }
 		void SetScale(float x, float y) { m_ScaleX = x; m_ScaleY = y; }
+		void SetGradient(const Render::Color& top, const Render::Color& bottom)
+		{
+			m_UseGradient = true;
+			m_ColorTop = top;
+			m_ColorBottom = bottom;
+		}
 
 		float GetWidth() const { return m_Width; }
 		float GetHeight() const { return m_Height; }
@@ -41,7 +47,11 @@ namespace Base
 			float width = m_Width * m_ScaleX;
 			float height = m_Height * m_ScaleY;
 
-			if (m_Texture != nullptr)
+			if (m_UseGradient)
+			{
+				renderer.DrawQuad(m_X, m_Y, width, height, m_ColorTop, m_ColorBottom);
+			}
+			else if (m_Texture != nullptr)
 			{
 				renderer.DrawQuad(m_X, m_Y, width, height, *m_Texture, m_Color);
 			}
@@ -58,6 +68,9 @@ namespace Base
 		float m_ScaleX = 1.0f;
 		float m_ScaleY = 1.0f;
 		Render::Color m_Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		bool m_UseGradient = false;
+		Render::Color m_ColorTop{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Render::Color m_ColorBottom{ 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 }
 

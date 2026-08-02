@@ -44,6 +44,7 @@ namespace Render
 		void EndFrame();
 
 		void DrawQuad(float x, float y, float width, float height, const Color& color);
+		void DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor);
 		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
 		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
 
@@ -65,6 +66,7 @@ namespace Render
 
 		void Flush();
 		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID);
+		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID);
 
 		GLFWwindow* m_Window = nullptr;
 		int m_Width = 0;
