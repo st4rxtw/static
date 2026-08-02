@@ -29,6 +29,7 @@ namespace Base
 
 		float GetMouseX() const { return m_MouseX; }
 		float GetMouseY() const { return m_MouseY; }
+		float GetScrollY() const { return m_ScrollY; }
 
 	private:
 		static constexpr int kKeyCount = 349;
@@ -44,6 +45,7 @@ namespace Base
 
 		float m_MouseX = 0.0f;
 		float m_MouseY = 0.0f;
+		float m_ScrollY = 0.0f;
 	};
 }
 

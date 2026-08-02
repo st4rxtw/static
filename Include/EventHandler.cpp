@@ -10,13 +10,27 @@
 
 namespace Base
 {
+	namespace
+	{
+		float g_ScrollY = 0.0f;
+
+		void ScrollCallback(GLFWwindow*, double, double yoffset)
+		{
+			g_ScrollY += static_cast<float>(yoffset);
+		}
+	}
+
 	void EventHandler::Init(GLFWwindow* window)
 	{
 		m_Window = window;
+		glfwSetScrollCallback(window, ScrollCallback);
 	}
 
 	void EventHandler::Update()
 	{
+		m_ScrollY = g_ScrollY;
+		g_ScrollY = 0.0f;
+
 		m_PreviousKeys = m_CurrentKeys;
 
 		for (int key = 0; key < kKeyCount; ++key)
