@@ -52,7 +52,7 @@ namespace Base
 		}
 	}
 
-	void AudioEngine::PlaySound(std::string_view path)
+	void AudioEngine::PlayOneShot(std::string_view path)
 	{
 		// plays a sound
 		ma_engine_play_sound(m_Engine, Utils::Paths::Resolve(path).c_str(), nullptr);

@@ -25,7 +25,7 @@ namespace Base
 		bool Init();
 		void Shutdown();
 
-		void PlaySound(std::string_view path);
+		void PlayOneShot(std::string_view path);
 
 		ma_engine* GetHandle() const { return m_Engine; }
 
