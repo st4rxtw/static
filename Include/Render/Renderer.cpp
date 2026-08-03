@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 
 #include <array>
+#include <cmath>
 #include <format>
 #include <string>
 
@@ -220,12 +221,12 @@ void main()
 		glfwSwapBuffers(m_Window);
 	}
 
-	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID)
+	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID, float rotationDegrees)
 	{
-		PushQuad(x, y, width, height, u0, v0, u1, v1, color, color, textureID);
+		PushQuad(x, y, width, height, u0, v0, u1, v1, color, color, textureID, rotationDegrees);
 	}
 
-	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID)
+	void Renderer::PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID, float rotationDegrees)
 	{
 		if (m_QuadCount > 0 && (m_QuadCount >= kMaxQuadsPerBatch || textureID != m_BatchTextureID))
 		{
@@ -235,32 +236,61 @@ void main()
 		m_BatchTextureID = textureID;
 
 		QuadVertex* vertex = &m_Vertices[static_cast<size_t>(m_QuadCount) * 4];
-		vertex[0] = { x, y, u0, v0, topColor.r, topColor.g, topColor.b, topColor.a };
-		vertex[1] = { x + width, y, u1, v0, topColor.r, topColor.g, topColor.b, topColor.a };
-		vertex[2] = { x + width, y + height, u1, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
-		vertex[3] = { x, y + height, u0, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+
+		if (rotationDegrees == 0.0f)
+		{
+			vertex[0] = { x, y, u0, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+			vertex[1] = { x + width, y, u1, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+			vertex[2] = { x + width, y + height, u1, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+			vertex[3] = { x, y + height, u0, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+		}
+		else
+		{
+			float centerX = x + width * 0.5f;
+			float centerY = y + height * 0.5f;
+			float radians = rotationDegrees * (3.14159265358979323846f / 180.0f);
+			float cosA = std::cos(radians);
+			float sinA = std::sin(radians);
+
+			auto rotate = [&](float px, float py)
+			{
+				float dx = px - centerX;
+				float dy = py - centerY;
+				return std::pair<float, float>{ centerX + dx * cosA - dy * sinA, centerY + dx * sinA + dy * cosA };
+			};
+
+			auto [x0, y0] = rotate(x, y);
+			auto [x1, y1] = rotate(x + width, y);
+			auto [x2, y2] = rotate(x + width, y + height);
+			auto [x3, y3] = rotate(x, y + height);
+
+			vertex[0] = { x0, y0, u0, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+			vertex[1] = { x1, y1, u1, v0, topColor.r, topColor.g, topColor.b, topColor.a };
+			vertex[2] = { x2, y2, u1, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+			vertex[3] = { x3, y3, u0, v1, bottomColor.r, bottomColor.g, bottomColor.b, bottomColor.a };
+		}
 
 		++m_QuadCount;
 	}
 
-	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& color)
+	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& color, float rotationDegrees)
 	{
-		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, m_WhiteTexture.GetID());
+		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, m_WhiteTexture.GetID(), rotationDegrees);
 	}
 
-	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor)
+	void Renderer::DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor, float rotationDegrees)
 	{
-		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, topColor, bottomColor, m_WhiteTexture.GetID());
+		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, topColor, bottomColor, m_WhiteTexture.GetID(), rotationDegrees);
 	}
 
-	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color)
+	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color, float rotationDegrees)
 	{
-		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, texture.GetID());
+		PushQuad(x, y, width, height, 0.0f, 0.0f, 1.0f, 1.0f, color, texture.GetID(), rotationDegrees);
 	}
 
-	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color)
+	void Renderer::DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color, float rotationDegrees)
 	{
-		PushQuad(x, y, width, height, u0, v0, u1, v1, color, texture.GetID());
+		PushQuad(x, y, width, height, u0, v0, u1, v1, color, texture.GetID(), rotationDegrees);
 	}
 
 	void Renderer::Flush()

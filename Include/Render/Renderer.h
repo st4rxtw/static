@@ -43,10 +43,10 @@ namespace Render
 		void BeginFrame(const Color& clearColor, float cameraX = 0.0f, float cameraY = 0.0f, float cameraZoom = 1.0f);
 		void EndFrame();
 
-		void DrawQuad(float x, float y, float width, float height, const Color& color);
-		void DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor);
-		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
-		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f });
+		void DrawQuad(float x, float y, float width, float height, const Color& color, float rotationDegrees = 0.0f);
+		void DrawQuad(float x, float y, float width, float height, const Color& topColor, const Color& bottomColor, float rotationDegrees = 0.0f);
+		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f }, float rotationDegrees = 0.0f);
+		void DrawQuad(float x, float y, float width, float height, const GLTexture& texture, float u0, float v0, float u1, float v1, const Color& color = Color{ 1.0f, 1.0f, 1.0f, 1.0f }, float rotationDegrees = 0.0f);
 
 		int GetWidth() const { return m_Width; }
 		int GetHeight() const { return m_Height; }
@@ -65,8 +65,8 @@ namespace Render
 		static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
 		void Flush();
-		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID);
-		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID);
+		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& color, uint32_t textureID, float rotationDegrees);
+		void PushQuad(float x, float y, float width, float height, float u0, float v0, float u1, float v1, const Color& topColor, const Color& bottomColor, uint32_t textureID, float rotationDegrees);
 
 		GLFWwindow* m_Window = nullptr;
 		int m_Width = 0;

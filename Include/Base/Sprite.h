@@ -23,6 +23,7 @@ namespace Base
 		// sets the sprites color
 		void SetColor(const Render::Color& color) { m_Color = color; }
 		void SetScale(float x, float y) { m_ScaleX = x; m_ScaleY = y; }
+		void SetRotation(float degrees) { m_Rotation = degrees; }
 		void SetGradient(const Render::Color& top, const Render::Color& bottom)
 		{
 			m_UseGradient = true;
@@ -34,11 +35,13 @@ namespace Base
 		float GetHeight() const { return m_Height; }
 		float GetScaleX() const { return m_ScaleX; }
 		float GetScaleY() const { return m_ScaleY; }
+		float GetRotation() const { return m_Rotation; }
 
 		float* GetWidthPtr() { return &m_Width; }
 		float* GetHeightPtr() { return &m_Height; }
 		float* GetScaleXPtr() { return &m_ScaleX; }
 		float* GetScaleYPtr() { return &m_ScaleY; }
+		float* GetRotationPtr() { return &m_Rotation; }
 		Render::Color& GetColorRef() { return m_Color; }
 
 		void Draw(Render::Renderer& renderer) override
@@ -49,15 +52,15 @@ namespace Base
 
 			if (m_UseGradient)
 			{
-				renderer.DrawQuad(m_X, m_Y, width, height, m_ColorTop, m_ColorBottom);
+				renderer.DrawQuad(m_X, m_Y, width, height, m_ColorTop, m_ColorBottom, m_Rotation);
 			}
 			else if (m_Texture != nullptr)
 			{
-				renderer.DrawQuad(m_X, m_Y, width, height, *m_Texture, m_Color);
+				renderer.DrawQuad(m_X, m_Y, width, height, *m_Texture, m_Color, m_Rotation);
 			}
 			else
 			{
-				renderer.DrawQuad(m_X, m_Y, width, height, m_Color);
+				renderer.DrawQuad(m_X, m_Y, width, height, m_Color, m_Rotation);
 			}
 		}
 
@@ -67,6 +70,7 @@ namespace Base
 		float m_Height = 32.0f;
 		float m_ScaleX = 1.0f;
 		float m_ScaleY = 1.0f;
+		float m_Rotation = 0.0f;
 		Render::Color m_Color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		bool m_UseGradient = false;
 		Render::Color m_ColorTop{ 1.0f, 1.0f, 1.0f, 1.0f };
