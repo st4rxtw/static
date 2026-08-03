@@ -50,7 +50,7 @@ namespace Base
 			rgba[i * 4 + 0] = 255;
 			rgba[i * 4 + 1] = 255;
 			rgba[i * 4 + 2] = 255;
-			rgba[i * 4 + 3] = atlasBitmap[i];
+			rgba[i * 4 + 3] = atlasBitmap[i] >= 128 ? 255 : 0;
 		}
 
 		m_Atlas.LoadFromMemory(kAtlasSize, kAtlasSize, rgba.data());
